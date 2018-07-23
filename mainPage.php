@@ -69,6 +69,10 @@
 		$(".contentContainer").css("min-height",$(window).height());
 
     $("textarea").css("height", $(window).height() - 250);
+
+    $("textarea").keyup(function(event) {
+      alert("changed");
+    });
     </script>
 
   </body>
