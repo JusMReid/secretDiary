@@ -1,4 +1,16 @@
-<?php include("login.php"); ?>
+<?php
+  SESSION_START();
+  include("login.php");
+  include("connection.php");
+
+  $query = "SELECT diary FROM users WHERE id='".$_SESSION['id']."' LIMIT 1";
+
+  $result = mysqli_query($conn,$query);
+
+	$row = mysqli_fetch_array($result);
+
+	$diary=$row['diary'];
+?>
 
 
 <!DOCTYPE html>
@@ -29,7 +41,7 @@
   	<div class="container">
 
   		<div class="navbar-header pull-left">
-  			<a class="navbar-brand">Secret Diary</a>
+  			<a class="navbar-brand" href="SecretDiary.php">Secret Diary</a>
 
   		</div>
 
@@ -51,7 +63,12 @@
   		 <h1 class="marginTop">Secret Diary</h1>
   		 <p class="lead">Your own private diary, with you wherever you go.</p>
 
-       <textarea class="form-control" name="diaryEntry" rows="8" cols="80"></textarea>
+       <textarea class="form-control" name="diaryEntry" >
+         Continue @ 57:22
+           <?php
+              echo $diary;
+            ?>
+       </textarea>
 
 		 </div>
 		</div>
@@ -70,9 +87,16 @@
 
     $("textarea").css("height", $(window).height() - 250);
 
-    $("textarea").keyup(function(event) {
-      alert("changed");
-    });
+    $("textarea").keyup(function() {
+
+    		$.post("updatediary.php", {diaryEntry:$("textarea").val()} );
+
+    	});
+
+    // $("textarea").keyup(function(event) {
+    //   alert("changed");
+
+
     </script>
 
   </body>
